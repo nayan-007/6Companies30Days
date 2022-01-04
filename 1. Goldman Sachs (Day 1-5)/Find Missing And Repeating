@@ -1,0 +1,109 @@
+
+QUESTION:
+---------
+
+  Given an unsorted array Arr of size N of positive integers. 
+  One number 'A' from set {1, 2, …N} is missing and one number 'B' occurs twice in array. 
+  Find these two numbers.
+
+Example 1:
+----------
+  Input:
+  N = 2
+  Arr[] = {2, 2}
+  Output: 2 1
+  Explanation: Repeating number is 2 and 
+  smallest positive missing number is 1.
+  
+  
+Example 2:
+----------
+
+  Input:
+  N = 3
+  Arr[] = {1, 3, 3}
+  Output: 3 2
+  Explanation: Repeating number is 3 and 
+  smallest positive missing number is 2.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SOLUTION:
+---------
+
+                METHOD 1 :  Using Sorting [ TC:- O(N*logN) ]
+
+int *findTwoElement(int *arr, int n) {
+       sort(arr,arr+n);
+       int *ans= new int[2];
+       for(int i=1;i<n-1;i++){
+           if(arr[i]==arr[i-1]){
+               ans[0]=arr[i];
+           }
+           if(arr[i]-1!=i){
+               ans[1] = i+1;
+           }
+       }
+      return ans;
+      
+ }
+ 
+ -------------------------------------------------------------------------------
+ 
+ 
+            METHOD 2: Using Frequency Array [ TC:- O(N)  SC:- O(N) ]
+ 
+ 
+ int *findTwoElement (int *arr, int n) 
+   {
+       int *ans = new int[2];
+       unordered_map<int,int> frq;
+       
+       for(int i = 0; i < n; i++)
+           frq[arr[i]]++;
+           
+       for(auto i:frq)
+           if(i.second > 1) ans[0] = i.first;
+           
+       for(int i = 1; i <= n; i++)
+           if(frq[i] == 0) ans[1] = i;
+           
+       return ans;
+   }
+   
+   
+------------------------------------------------------------------------------------
+
+
+          METHOD 3: Use elements as Index and mark the visited places  [ TC:- O(N)  SC: O(1) ]
+          
+          
+          
+          
+    int *findTwoElement(int *arr, int n) {
+        int *ans= new int[2];
+        int missing=0,repeat=0;
+        
+        for(int i=0;i<n;i++){
+            int ind= abs(arr[i])-1;
+            if(arr[ind]>0)
+                arr[ind]= -1* arr[ind];
+            else
+                repeat=abs(arr[i]);
+        }
+        
+        for(int i=0;i<n;i++){
+            if(arr[i]>0)
+                missing=i+1;
+        }
+        
+        ans[0]=repeat;
+        ans[1]=missing;
+        
+        return ans;
+        
+        
+    }
