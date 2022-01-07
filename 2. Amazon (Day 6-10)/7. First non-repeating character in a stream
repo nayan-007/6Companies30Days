@@ -1,0 +1,70 @@
+QUESTION:
+---------
+
+  Given an input stream of A of n characters consisting only of lower case alphabets. 
+  The task is to find the first non repeating character, 
+  each time a character is inserted to the stream. If there is no such character then append '#' to the answer.
+ 
+
+Example 1:
+----------
+
+  Input: A = "aabc"
+  Output: "a#bb"
+  Explanation: For every character first non
+  repeating character is as follow-
+  "a" - first non-repeating character is 'a'
+  "aa" - no non-repeating character so '#'
+  "aab" - first non-repeating character is 'b'
+  "aabc" - first non-repeating character is 'b'
+  
+  
+Example 2:
+----------
+
+  Input: A = "zz"
+  Output: "z#"
+  Explanation: For every character first non
+  repeating character is as follow-
+  "z" - first non-repeating character is 'z'
+  "zz" - no non-repeating character so '#'
+  
+Constraints:
+-------------
+  1 <= n <= 10^5
+  
+  
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+  
+SOLUTION:
+---------
+
+
+    string FirstNonRepeating(string A){
+		    vector<int> freq(26,0);
+		    queue<char> q;
+		    string res;
+		    for(auto &ch: A){
+		       q.push(ch);
+		       freq[ch-'a']++;
+		       while(!q.empty()){
+		           if(freq[q.front()-'a']>1)
+		                q.pop();
+		           else{
+		               res+= q.front();
+		               break;
+		           }
+		       }
+		       if(q.empty())
+		            res+='#';
+		       
+		    }
+		    return res;
+		    
+		}
+    
+    Expected Time Complexity: O(N)
+    Expected Space Complexity: O(N)
