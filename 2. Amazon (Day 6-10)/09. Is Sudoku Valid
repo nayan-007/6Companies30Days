@@ -1,0 +1,61 @@
+QUESTION:
+--------
+
+Given an incomplete Sudoku configuration in terms of a 9x9  2-D square matrix(mat[][]). 
+The task to check if the current configuration is valid or not where a 0 represents an empty block.
+Note: Current valid configuration does not ensure validity of the final solved sudoku. 
+Refer to this : https://en.wikipedia.org/wiki/Sudoku
+
+Example 1:
+----------
+
+  Input: mat[][] = [
+  [3, 0, 6, 5, 0, 8, 4, 0, 0]
+  [5, 2, 0, 0, 0, 0, 0, 0, 0]
+  [0, 8, 7, 0, 0, 0, 0, 3, 1]
+  [0, 0, 3, 0, 1, 0, 0, 8, 0]
+  [9, 0, 0, 8, 6, 3, 0, 0, 5]
+  [0, 5, 0, 0, 9, 0, 6, 0, 0]
+  [1, 3, 0, 0, 0, 0, 2, 5, 0]
+  [0, 0, 0, 0, 0, 0, 0, 7, 4]
+  [0, 0, 5, 2, 0, 6, 3, 0, 0]
+  ]
+  Output: 1
+  Explaination: It is possible to have a
+  proper sudoku.
+
+-------------------------------------
+Expected Time Complexity: O(N2)
+Expected Auxiliary Space: O(1)
+-------------------------------------
+
+Constraints:
+--------------
+  0 ≤ mat[i][j] ≤ 9
+  
+  
+  
+  
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+SOLUTION:
+-----------
+
+class Solution{
+public:
+    int isValid(vector<vector<int>> board){
+        int used1[9][9] = {0}, used2[9][9] = {0}, used3[9][9] = {0};
+        for(int i = 0; i < board.size(); ++ i)
+            for(int j = 0; j < board[i].size(); ++ j)
+                if(board[i][j] != 0)
+                {
+                    int num = board[i][j]  - 1, k = i / 3 * 3 + j / 3;
+                    if(used1[i][num] || used2[j][num] || used3[k][num])
+                        return false;
+                    used1[i][num] = used2[j][num] = used3[k][num] = 1;
+                }
+        
+        return true;  
+    }
+};
