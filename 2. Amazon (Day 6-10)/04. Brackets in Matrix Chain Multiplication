@@ -1,0 +1,86 @@
+QUESTION:
+---------
+
+Given an array p[] of length n used to denote the dimensions of a series of matrices such that dimension of i'th matrix is p[i] * p[i+1]. 
+There are a total of n-1 matrices. Find the most efficient way to multiply these matrices together. 
+The problem is not actually to perform the multiplications, 
+but merely to decide in which order to perform the multiplications such that you need to perform minimum number of multiplications. 
+There are many options to multiply a chain of matrices because matrix multiplication is associative i.e. no matter how one parenthesize the product, 
+the result will be the same.
+
+
+Example 1:
+--------
+
+  Input: 
+  n = 5
+  p[] = {1, 2, 3, 4, 5}
+  Output: (((AB)C)D)
+  Explaination: The total number of 
+  multiplications are (1*2*3) + (1*3*4) 
+  + (1*4*5) = 6 + 12 + 20 = 38.
+ 
+
+
+Example 2:
+--------
+
+
+  Input: 
+  n = 3
+  p = {3, 3, 3}
+  Output: (AB)
+  Explaination: The total number of 
+  multiplications are (3*3*3) = 27.
+ 
+
+
+Expected Time Complexity: O(n3)
+Expected Auxiliary Space: O(n2)
+
+
+Constraints:
+2 ≤ n ≤ 26 
+1 ≤ p[i] ≤ 500 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SOLUTION:
+---------
+
+class Solution{
+private:
+    map<string, pair<int,string>> dp;
+    pair<int, string> matrixChainOrderUtil(int p[], int l, int r) {
+    	// Base case
+    	/*
+		For [1, 2, 3], base case will hit when l = 0, r = 1 or l = 1, r = 2
+		or we can say we are at matrix A or B
+    	l = 0 -> A
+    	l = 1 -> B
+    	so on..
+    	*/
+        if(l + 1 == r) return {0, "" + string(1, l + 'A')};
+        string key = to_string(l) + ";" + to_string(r);
+        if(dp.count(key)) return dp[key];
+        
+        int currMin = INT_MAX;
+        string minString;
+        for(int k = l + 1; k < r; k++) {
+            auto p1 = matrixChainOrderUtil(p, l, k), p2 = matrixChainOrderUtil(p, k, r);
+            if(p1.first + p2.first + p[l] * p[k] * p[r] < currMin) {
+                currMin = p1.first + p2.first + p[l] * p[k] * p[r];
+                // Multiply te 2 strings
+                minString = p1.second + p2.second;
+            }
+        }
+        // Enclose them in brackets and return
+        return dp[key] = {currMin, "(" + minString + ")"};
+    }
+public:
+    string matrixChainOrder(int p[], int n){
+        // code here
+        return matrixChainOrderUtil(p, 0, n - 1).second;
+    }
+};
