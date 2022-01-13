@@ -1,0 +1,83 @@
+QUESTION:
+---------
+
+Given an array of integers and another number. 
+Find all the unique quadruple from the given array that sums up to the given number.
+
+Example 1:
+---------
+
+
+  Input:
+  N = 5, K = 3
+  A[] = {0,0,2,1,1}
+  Output: 0 0 1 2 $
+  Explanation: Sum of 0, 0, 1, 2 is equal
+  to K.
+  
+  
+Example 2:
+----------
+
+  Input:
+  N = 7, K = 23
+  A[] = {10,2,3,4,5,7,8}
+  Output: 2 3 8 10 $2 4 7 10 $3 5 7 8 $
+  Explanation: Sum of 2, 3, 8, 10 = 23,
+  sum of 2, 4, 7, 10 = 23 and sum of 3,
+  5, 7, 8 = 23.
+
+
+Expected Time Complexity: O(N3).
+Expected Auxiliary Space: O(N2).
+
+Constraints:
+1 <= N <= 100
+-1000 <= K <= 1000
+-100 <= A[] <= 100
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+SOLUTION:
+---------
+
+
+class Solution{
+    public:
+    // nums[] : int input array of integers
+    // target : the quadruple sum required
+    vector<vector<int> > fourSum(vector<int> &nums, int target) {
+        vector<vector<int>> res;
+        
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        if(n==0) return res;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int tgt=target-nums[i]-nums[j];
+                int l=j+1;
+                int h=n-1;
+                while(l<h){
+                    if(nums[h]+nums[l]<tgt) l++;
+                    else if(nums[h]+nums[l]>tgt) h--;
+                    else{
+                        vector<int> tmp;
+                        tmp.push_back(nums[i]);
+                        tmp.push_back(nums[j]);
+                        tmp.push_back(nums[l]);
+                        tmp.push_back(nums[h]);
+                        res.push_back(tmp);
+                        int x=nums[l],y=nums[h];
+                        while(l<=h and nums[l]==x) l++;
+                        while(l<=h and nums[h]==y) h--;
+                    }
+                }
+                while(j+1<n and nums[j]==nums[j+1]) j++;
+            }
+            while(i+1<n and nums[i]==nums[i+1]) i++;
+        }
+        
+        return res;
+    }
+};
