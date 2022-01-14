@@ -1,0 +1,55 @@
+QUESTION:
+--------
+
+  Given an integer array arr of size N, 
+  the task is to divide it into two sets S1 and S2 
+  such that the absolute difference between their sums is minimum and find the minimum difference
+
+
+Example 1:
+
+  Input: N = 4, arr[] = {1, 6, 11, 5} 
+  Output: 1
+  Explanation: 
+  Subset1 = {1, 5, 6}, sum of Subset1 = 12 
+  Subset2 = {11}, sum of Subset2 = 11
+  
+  
+Example 2:
+  Input: N = 2, arr[] = {1, 4}
+  Output: 3
+  Explanation: 
+  Subset1 = {1}, sum of Subset1 = 1
+  Subset2 = {4}, sum of Subset2 = 4
+  
+  
+  
+--------------------------------------------------------------------------------------------------------------------
+
+SOLUTION:
+--------
+
+
+class Solution{
+  private:
+  
+  int solve(int arr[],int n, int sum, int total, vector<vector<int>> &dp){
+    if(n==0)
+        return abs(total-2*sum);
+        
+    if(dp[n][sum]!=-1) return dp[n][sum];
+    
+    dp[n][sum]= min( solve(arr,n-1,sum+arr[n-1],total,dp) , solve(arr,n-1,sum,total,dp));
+    
+    return dp[n][sum];
+  }
+
+
+  public:
+	int minDifference(int arr[], int n)  { 
+	    // Your code goes here
+	    int total=accumulate(arr,arr+n,0);
+	    vector<vector<int>> dp(n+1,vector<int> (total+1,-1));
+	    return solve(arr,n,0,total,dp);
+	} 
+};
