@@ -1,0 +1,72 @@
+QUESTION:
+---------
+
+  Given a keypad as shown in the diagram, 
+  and an N digit number which is represented by array a[ ], 
+  the task is to list all words which are possible by pressing these numbers.
+
+
+Example 1:
+
+  Input: N = 3, a[] = {2, 3, 4}
+  Output:
+  adg adh adi aeg aeh aei afg afh afi 
+  bdg bdh bdi beg beh bei bfg bfh bfi 
+  cdg cdh cdi ceg ceh cei cfg cfh cfi 
+  Explanation: When we press 2,3,4 then 
+  adg, adh, adi, ... cfi are the list of 
+  possible words.
+  
+  
+Example 2:
+
+  Input: N = 3, a[] = {3, 4, 5}
+  Output:
+  dgj dgk dgl dhj dhk dhl dij dik dil 
+  egj egk egl ehj ehk ehl eij eik eil 
+  fgj fgk fgl fhj fhk fhl fij fik fil
+  Explanation: When we press 3,4,5 then 
+  dgj, dgk, dgl, ... fil are the list of 
+  possible words.
+  
+  
+  
+  -----------------------------------------------------------------------------------------------------
+  
+  
+  SOLUTION:
+  ----------
+  
+  class Solution
+{
+    private:
+    
+    void solve(int digits[],int n,int index,string output, vector<string> &ans, string arr[]){
+        if(index==n){
+            ans.push_back(output);
+            return;
+        }
+        
+        int digit=digits[index];
+        string temp= arr[digit];
+        for(int i=0;i<temp.length();i++){
+            output.push_back(temp[i]);
+            solve(digits,n,index+1,output,ans,arr);
+            output.pop_back();
+        }
+    }
+    
+    public:
+    //Function to find list of all words possible by pressing given numbers.
+    vector<string> possibleWords(int a[], int N)
+    {
+        vector<string> ans;
+        if(N==0)
+            return ans;
+        int index=0;
+        string output="";
+        string arr[10]= {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        solve(a,N,index,output,ans,arr);
+        return ans;
+    }
+};
