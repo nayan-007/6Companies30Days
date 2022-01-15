@@ -1,0 +1,62 @@
+QUESION:
+--------
+Given a Graph of V vertices and E edges and another edge(c - d), 
+the task is to find if the given edge is a Bridge. i.e., removing the edge disconnects the graph.
+
+
+
+Expected Time Complexity: O(V + E).
+Expected Auxiliary Space: O(V).
+
+ 
+
+Constraints:
+1 ≤ V,E ≤ 105
+0 ≤ c, d ≤ V-1
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+SOLUTION:
+---------
+
+class Solution
+{
+    private:
+    bool dfs(int src, int dest, vector<int>& vis, vector<int>adj[]){
+        if(src == dest){
+            return true;
+        }
+        vis[src] = 1;
+        for(int i : adj[src]){
+            if(!vis[i]){
+                if(dfs(i,dest,vis,adj)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+	public:
+    //Function to find if the given edge is a bridge in graph.
+    int isBridge(int V, vector<int> arr[], int c, int d) 
+    {
+        vector<int> adj[V];
+        for(int i=0;i<V;i++){
+            for(auto j : arr[i]){
+                if((i==c && j==d ) or (i==d or j==c))
+                    continue;
+                else
+                    adj[i].push_back(j);
+            }
+        }
+        
+        vector<int> vis(V,0);
+        if(dfs(c,d,vis,adj))
+            return 0;
+        return 1;
+        
+    }
+};
